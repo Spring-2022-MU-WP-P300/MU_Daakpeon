@@ -18,16 +18,22 @@ const User = require('../../models/User');
 // eslint-disable-next-line no-shadow
 // eslint-disable-next-line consistent-return
 router.post('/register', (req, res) => {
-    const { errors, isValid } = validateRegisterInput(req.body);
+    // eslint-disable-next-line object-curly-newline
+    const { name, email, password, password2 } = req.body;
+
+    const { errors, isValid } = validateRegisterInput({
+        name,
+        email,
+        password,
+        password2,
+    });
 
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
-    const { name, email, password } = req.body;
-
     // eslint-disable-next-line consistent-return
     User.findOne({ email }).then((user) => {
+        // console.log(user);
         if (user) {
             errors.email = 'Email already exists';
             return res.status(400).json(errors);
@@ -64,12 +70,12 @@ router.post('/register', (req, res) => {
 // eslint-disable-next-line no-shadow
 // eslint-disable-next-line consistent-return
 router.post('/login', (req, res) => {
-    const { errors, isValid } = validateLoginInput(req.body);
+    const { email, password } = req.body;
+    const { errors, isValid } = validateLoginInput({ email, password });
 
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    const { email, password } = req.body;
 
     User.findOne({ email }).then((user) => {
         if (!user) {
@@ -98,7 +104,7 @@ router.post('/login', (req, res) => {
 // eslint-disable-next-line no-shadow
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
     const { id, name, email } = req.user;
-    res.json({ id, name, email });
+    return res.json({ id, name, email });
 });
 
 module.exports = router;

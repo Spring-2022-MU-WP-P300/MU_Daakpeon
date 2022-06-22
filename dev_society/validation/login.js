@@ -1,10 +1,10 @@
+/* eslint-disable no-param-reassign */
 const Validator = require('validator');
 const isEmpty = require('./isEmpty');
 
-module.exports = function validateLoginInput(data) {
+module.exports = function validateLoginInput({ email, password }) {
     const errors = {};
     // eslint-disable-next-line object-curly-newline
-    let { email, password } = data;
 
     email = !isEmpty(email) ? email : '';
     password = !isEmpty(password) ? password : '';

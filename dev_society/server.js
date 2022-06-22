@@ -12,13 +12,12 @@ const app = express();
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 // DB Config
-const db = require('./config/keys').mongoURI;
+const DB_URI = require('./config/keys').mongoURI;
 
 // Connect to MongoDB through Mongoose
 mongoose
-    .connect(db)
+    .connect(DB_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch((err) => console.log(err));
 
